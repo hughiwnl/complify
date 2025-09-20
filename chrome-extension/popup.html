@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Complify</title>
+    <style>
+      body { 
+        font-family: system-ui, Arial; 
+        width: 320px; 
+        padding: 20px; 
+        margin: 0;
+        background: #f8f9fa;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+      }
+      .time-wasted {
+        font-size: 18px;
+        font-weight: 600;
+        color: #000000;
+        text-align: center;
+        margin-bottom: 8px;
+      }
+      #complifyBtn {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        background: #8B4513;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      #complifyBtn:hover {
+        background: #A0522D;
+      }
+      #complifyBtn:active {
+        background: #654321;
+      }
+      .warning {
+        font-size: 11px;
+        color: #6c757d;
+        text-align: center;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="time-wasted" id="timeWasted">Time wasted: 0 minutes</div>
+      
+      <button id="complifyBtn">Complify</button>
+
+      <div class="warning">
+        Auto-fills forms and tracks time on submit. Avoid on sensitive pages.
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
