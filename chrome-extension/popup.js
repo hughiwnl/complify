@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load saved time wasted from storage
   try {
-    if (chrome && chrome.storage && chrome.storage.local) {
+    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
       chrome.storage.local.get(['timeWasted'], (result) => {
         try {
           const timeWasted = result && result.timeWasted ? result.timeWasted : 0;
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Listen for time wasted updates from content script
   try {
-    if (chrome && chrome.runtime && chrome.runtime.onMessage) {
+    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
       chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         try {
           if (message && message.action === 'updateTimeWasted') {
@@ -49,18 +49,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   complifyBtn.addEventListener('click', async () => {
     try {
+      if (typeof chrome === 'undefined') {
+        console.error('Chrome API not available');
+        return;
+      }
+
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      if (!tab || !tab.id) return;
+      if (!tab || !tab.id) {
+        console.error('No active tab found');
+        return;
+      }
 
       // Autofill the form
-      if (chrome && chrome.tabs && chrome.tabs.sendMessage) {
+      if (chrome.tabs && chrome.tabs.sendMessage) {
         console.log('Sending autofill message to tab:', tab.id);
         chrome.tabs.sendMessage(tab.id, {
           action: 'autofill_random',
           options: { includeSelects: true, includeCheckboxes: true, seedCount: 200 }
         }, (resp) => {
           console.log('Autofill response:', resp);
-          if (chrome.runtime.lastError) {
+          if (chrome.runtime && chrome.runtime.lastError) {
             console.error('Chrome runtime error:', chrome.runtime.lastError);
           }
         });
